@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white p-4 border-r">
+            <h1 class="text-2xl font-bold text-red-600">Reddit</h1>
+            <nav class="mt-4">
+                <ul>
+                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">🏠 Home</a></li>
+                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">🔥 Popular</a></li>
+                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">🔍 Explore</a></li>
+                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">📝 All</a></li>
+                </ul>
+            </nav>
+            <h2 class="mt-6 text-lg font-semibold">Custom Feeds</h2>
+            <button class="mt-2 w-full p-2 bg-blue-500 text-white rounded">+ Create a custom feed</button>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <div class="bg-white p-4 rounded shadow mb-4">
+                <h2 class="text-lg font-semibold">Is ChatGPT Plus subscription worth it now?</h2>
+                <p class="text-gray-600 text-sm">I've been using chatgpt plus for a few months now and it's been great...</p>
+                <div class="mt-2 flex space-x-4 text-gray-500">
+                    <button class="hover:text-blue-500">👍 41</button>
+                    <button class="hover:text-blue-500">💬 69</button>
+                    <button class="hover:text-blue-500">🔗 Share</button>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded shadow">
+                <h2 class="text-lg font-semibold">Promoted Post</h2>
+                <p class="text-gray-600 text-sm">With a single source of truth for all ongoing projects...</p>
+                <div class="mt-2 flex space-x-4 text-gray-500">
+                    <button class="hover:text-blue-500">🔗 Learn more</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
