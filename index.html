@@ -3,45 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuchisme</title>
+    <title>tuCHISME - Comparte y descubre</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white p-4 border-r">
-            <h1 class="text-2xl font-bold text-red-600">Tuchisme</h1>
-            <nav class="mt-4">
-                <ul>
-                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">🏠 Home</a></li>
-                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">🦌 Popular</a></li>
-                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">🏳️‍🌈</ All</a></li>
-                    <li class="mb-2"><a href="#" class="block p-2 hover:bg-gray-200 rounded">🔍 Explore</a></li>
-                </ul>
-            </nav>
-            <h2 class="mt-6 text-lg font-semibold">Custom Feeds</h2>
-            <button class="mt-2 w-full p-2 bg-blue-500 text-white rounded">+ Create a custom feed</button>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="flex-1 p-6">
-            <div class="bg-white p-4 rounded shadow mb-4">
-                <h2 class="text-lg font-semibold">Is ChatGPT Plus subscription worth it now?</h2>
-                <p class="text-gray-600 text-sm">I've been using chatgpt plus for a few months now and it's been great...</p>
-                <div class="mt-2 flex space-x-4 text-gray-500">
-                    <button class="hover:text-blue-500">👍 41</button>
-                    <button class="hover:text-blue-500">💬 69</button>
-                    <button class="hover:text-blue-500">🔗 Share</button>
-                </div>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex flex-col">
+    <div class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 text-center mb-8 float-animation">
+                🗨️ tuCHISME
+            </h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+                <!-- Botón Reno -->
+                <button 
+                    onclick="redirigir('reno.html')"
+                    class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center gap-3"
+                >
+                    <span class="text-6xl">🦌</span>
+                    <span class="text-gray-700 font-medium">Noticias Locales</span>
+                </button>
+
+                <!-- Botón Amistad -->
+                <button 
+                    onclick="redirigir('amistad.html')"
+                    class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center gap-3"
+                >
+                    <span class="text-6xl">🤝</span>
+                    <span class="text-gray-700 font-medium">Consejos Sociales</span>
+                </button>
+
+                <!-- Botón Bandera -->
+                <button 
+                    onclick="redirigir('bandera.html')"
+                    class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center gap-3"
+                >
+                    <span class="text-6xl">🏳️‍🌈</span>
+                    <span class="text-gray-700 font-medium">Comunidad</span>
+                </button>
             </div>
-            <div class="bg-white p-4 rounded shadow">
-                <h2 class="text-lg font-semibold">Promoted Post</h2>
-                <p class="text-gray-600 text-sm">With a single source of truth for all ongoing projects...</p>
-                <div class="mt-2 flex space-x-4 text-gray-500">
-                    <button class="hover:text-blue-500">🔗 Learn more</button>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
+
+    <!-- Pie de página -->
+    <footer class="bg-gray-800 text-white py-6 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-center md:text-left text-gray-400">
+                    © 2023 tuCHISME - Todos los derechos reservados
+                </p>
+                
+                <div class="flex space-x-6">
+                    <!-- Instagram -->
+                    <a href="#" 
+                       class="flex items-center gap-2 hover:text-pink-500 transition-colors"
+                       aria-label="Instagram">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                        </svg>
+                        <span class="hidden md:inline">Instagram</span>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="#" 
+                       class="flex items-center gap-2 hover:text-black transition-colors"
+                       aria-label="TikTok">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19.589 6.686a4.793 4.793 0 01-3.77-4.245V2h-3.445v13.672a2.894 2.894 0 01-5.589 1.364 2.894 2.894 0 012.555-4.215c.911 0 1.686.6 1.964 1.425V9.2h3.444v1.704a4.799 4.799 0 013.77-1.751V6.686z"/>
+                        </svg>
+                        <span class="hidden md:inline">TikTok</span>
+                    </a>
+
+                    <!-- X (Twitter) -->
+                    <a href="#" 
+                       class="flex items-center gap-2 hover:text-gray-300 transition-colors"
+                       aria-label="Twitter">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+                        </svg>
+                        <span class="hidden md:inline">X</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function redirigir(pagina) {
+            window.location.href = pagina;
+        }
+    </script>
 </body>
 </html>
