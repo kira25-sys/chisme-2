@@ -75,6 +75,55 @@
     </script>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen">
+
+    <!-- Navbar -->
+<nav class="bg-white shadow-sm">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">tuCHISME</a>
+
+            <!-- Menú para desktop -->
+            <div class="hidden md:flex items-center gap-6">
+                <div id="authState">
+                    <!-- Si no está autenticado -->
+                    <div id="notLoggedIn" class="flex items-center gap-4">
+                        <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
+                        <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">Registrarse</a>
+                    </div>
+
+                    <!-- Si está autenticado -->
+                    <div id="loggedIn" class="hidden flex items-center gap-4">
+                        <span id="userCoins" class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                            <span id="coinCount">50</span> 🪙
+                        </span>
+                        <button onclick="logout()" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menú hamburguesa para móvil -->
+            <div class="md:hidden">
+                <button id="menuButton" class="text-indigo-600 hover:text-indigo-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menú móvil (oculto por defecto) -->
+        <div id="mobileMenu" class="hidden md:hidden pb-4">
+            <div class="flex flex-col gap-4">
+                <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
+                <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all text-center">Registrarse</a>
+            </div>
+        </div>
+    </div>
+</nav>
+    
     <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-6">
         <!-- Barra lateral -->
         <div class="w-full md:w-64 space-y-4">
