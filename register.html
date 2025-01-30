@@ -128,7 +128,10 @@
                     title: 'Error',
                     text: error.message,
                     confirmButtonColor: '#6366f1'
-                });
+                    }).then(() => {
+                    const previousPage = document.referrer && document.referrer !== window.location.href ? document.referrer : 'feed.html';
+                    window.location.href = previousPage;
+                     });
             }
         });
     </script>
