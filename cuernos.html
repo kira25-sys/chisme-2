@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feed - tuCHISME</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -15,113 +16,57 @@
             animation: pulse 1s infinite;
         }
     </style>
-    <script>
-        // Datos simulados (para MVP)
-        const posts = {
-            noticias: [
-                { titulo: "Nueva ordenanza municipal", preview: "Se aprobó la nueva normativa de tránsito...", contenido: "Texto completo aquí..." },
-                { titulo: "Corte de agua programado", preview: "El próximo viernes habrá interrupción del servicio...", contenido: "Detalles del corte..." }
-            ],
-            consejos: [
-                { titulo: "Cómo ahorrar en la compra", preview: "5 tips prácticos para economizar...", contenido: "Consejos detallados..." }
-            ],
-            comunidad: [
-                { titulo: "Fiesta del barrio", preview: "Este sábado en la plaza principal...", contenido: "Programación completa..." }
-            ]
-        }
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="index.html" class="text-2xl font-bold text-indigo-600">tuCHISME</a>
 
-        function cargarPosts() {
-            const params = new URLSearchParams(window.location.search)
-            const categoria = params.get('categoria') || 'noticias'
-            
-            // Actualizar barra lateral
-            document.querySelectorAll('.categoria-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg')
-                if(btn.dataset.cat === categoria) {
-                    btn.classList.add('bg-indigo-600', 'text-white', 'shadow-lg')
-                }
-            })
-            
-            // Mostrar posts
-            const container = document.getElementById('posts-container')
-            container.innerHTML = posts[categoria].map((post, index) => `
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mb-6 group">
-                    <div class="flex items-start gap-4">
-                        <div class="bg-indigo-100 p-3 rounded-lg">
-                            <span class="text-indigo-600 text-2xl">${index === 0 ? '📢' : index === 1 ? '💡' : '🎉'}</span>
+                <!-- Menú para desktop -->
+                <div class="hidden md:flex items-center gap-6">
+                    <div id="authState">
+                        <!-- Si no está autenticado -->
+                        <div id="notLoggedIn" class="flex items-center gap-4">
+                            <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
+                            <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">Registrarse</a>
                         </div>
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">${post.titulo}</h3>
-                            <p class="text-gray-600 mb-4">${post.preview}</p>
-                            <button onclick="mostrarContenido('${post.contenido}')" 
-                                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2">
-                                <span>Ver más</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
+
+                        <!-- Si está autenticado -->
+                        <div id="loggedIn" class="hidden flex items-center gap-4">
+                            <span id="userCoins" class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                                <span id="coinCount">50</span> 🪙
+                            </span>
+                            <button onclick="logout()" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                                Cerrar Sesión
                             </button>
                         </div>
                     </div>
                 </div>
-            `).join('')
-        }
 
-        function mostrarContenido(contenido) {
-            alert(`Contenido completo:\n\n${contenido}`)
-        }
-
-        // Cargar al iniciar
-        window.onload = cargarPosts
-    </script>
-</head>
-<body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen">
-    <!-- Navbar -->
-<nav class="bg-white shadow-sm">
-    <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-            <!-- Logo -->
-            <a href="index.html" class="text-2xl font-bold text-indigo-600">tuCHISME</a>
-
-            <!-- Menú para desktop -->
-            <div class="hidden md:flex items-center gap-6">
-                <div id="authState">
-                    <!-- Si no está autenticado -->
-                    <div id="notLoggedIn" class="flex items-center gap-4">
-                        <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
-                        <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">Registrarse</a>
-                    </div>
-
-                    <!-- Si está autenticado -->
-                    <div id="loggedIn" class="hidden flex items-center gap-4">
-                        <span id="userCoins" class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                            <span id="coinCount">50</span> 🪙
-                        </span>
-                        <button onclick="logout()" class="text-indigo-600 hover:text-indigo-700 font-medium">
-                            Cerrar Sesión
-                        </button>
-                    </div>
+                <!-- Menú hamburguesa para móvil -->
+                <div class="md:hidden">
+                    <button id="menuButton" class="text-indigo-600 hover:text-indigo-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            <!-- Menú hamburguesa para móvil -->
-            <div class="md:hidden">
-                <button id="menuButton" class="text-indigo-600 hover:text-indigo-700 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
-                    </svg>
-                </button>
+            <!-- Menú móvil (oculto por defecto) -->
+            <div id="mobileMenu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col gap-4">
+                    <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
+                    <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all text-center">Registrarse</a>
+                </div>
             </div>
         </div>
+    </nav>
 
-        <!-- Menú móvil (oculto por defecto) -->
-        <div id="mobileMenu" class="hidden md:hidden pb-4">
-            <div class="flex flex-col gap-4">
-                <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
-                <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all text-center">Registrarse</a>
-            </div>
-        </div>
-    </div>
-</nav>
+    <!-- Contenido principal -->
     <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-6">
         <!-- Barra lateral -->
         <div class="w-full md:w-64 space-y-4">
@@ -173,7 +118,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
     </a>
-    
+
     <!-- Scripts en el orden correcto -->
     <!-- 1. Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -183,5 +128,20 @@
     <!-- 2. Configuración de Firebase -->
     <script src="firebase-config.js"></script>
 
+    <!-- 3. Lógica de la página -->
+    <script>
+        // Lógica de la página
+        console.log("Auth:", auth); // Debe mostrar el objeto de autenticación
+        console.log("DB:", db); // Debe mostrar el objeto de Firestore
+
+        // Lógica de autenticación
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log("Usuario autenticado:", user.email);
+            } else {
+                console.log("Usuario no autenticado");
+            }
+        });
+    </script>
 </body>
 </html>
