@@ -12,12 +12,22 @@ const firebaseConfig = {
 
 
 // Inicializar Firebase
-firebase.initializeApp(firebaseConfig);
+try {
+  firebase.initializeApp(firebaseConfig);
+} catch (error) {
+  console.error("Error inicializando Firebase:", error);
+}
+
+// Exportar servicios
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// Hacer disponible en ámbito global
+window.auth = auth;
+window.db = db;
+
 // Función para monedas
-function updateCoinDisplay(coins) {
+window.updateCoinDisplay = (coins) => {
   const coinElement = document.getElementById('userCoins');
   if(coinElement) {
     coinElement.innerHTML = `
@@ -26,4 +36,4 @@ function updateCoinDisplay(coins) {
       </span>
     `;
   }
-}
+};
