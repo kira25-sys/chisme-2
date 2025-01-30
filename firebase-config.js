@@ -10,12 +10,16 @@ const firebaseConfig = {
 
 };
 
-
 // Inicializar Firebase
 try {
   firebase.initializeApp(firebaseConfig);
 } catch (error) {
   console.error("Error inicializando Firebase:", error);
+}
+
+// Inicializar Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 }
 
 // Exportar servicios
@@ -25,6 +29,8 @@ const db = firebase.firestore();
 // Hacer disponible en ámbito global
 window.auth = auth;
 window.db = db;
+
+console.log("Firebase config cargado correctamente");
 
 // Función para monedas
 window.updateCoinDisplay = (coins) => {
