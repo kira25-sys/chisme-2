@@ -184,6 +184,44 @@
 
     <!-- 2. Configuración de Firebase -->
     <script src="firebase-config.js"></script>
+    
+    <!-- Lógica del navbar -->
+<script>
+    // Escuchar cambios de autenticación
+    auth.onAuthStateChanged(user => {
+        const notLoggedIn = document.getElementById('notLoggedIn');
+        const loggedIn = document.getElementById('loggedIn');
+        const coinCount = document.getElementById('coinCount'); // Asegúrate de que este ID exista
+
+        if (user) {
+            // Ocultar botones de login/registro
+            notLoggedIn.classList.add('hidden');
+            loggedIn.classList.remove('hidden');
+
+            // Obtener monedas desde Firestore
+            db.collection('users').doc(user.uid).onSnapshot(doc => {
+                if (doc.exists) {
+                    const monedas = doc.data().monedas || 0;
+                    coinCount.textContent = monedas; // Actualizar el contador
+                } else {
+                    console.error("El documento del usuario no existe");
+                }
+            });
+
+        } else {
+            // Usuario no autenticado
+            notLoggedIn.classList.remove('hidden');
+            loggedIn.classList.add('hidden');
+        }
+    });
+
+    // Función para cerrar sesión
+    function logout() {
+        auth.signOut().then(() => {
+            window.location.href = 'index.html';
+        });
+    }
+</script>
 
     
 </body>
