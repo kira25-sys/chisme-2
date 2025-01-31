@@ -1,9 +1,3 @@
-// Inicialización de Firebase
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-console.log("Firebase Auth y Firestore inicializados correctamente");
-
 // Función para crear un post
 document.getElementById('createPostForm').addEventListener('submit', async (e) => {
     e.preventDefault(); // Previene el envío tradicional del formulario
