@@ -129,21 +129,6 @@
     <script src="firebase-config.js"></script>
 
     <!-- 3. Lógica de la página -->
-    <script>
-        // Lógica de la página
-        console.log("Auth:", auth); // Debe mostrar el objeto de autenticación
-        console.log("DB:", db); // Debe mostrar el objeto de Firestore
-
-        // Lógica de autenticación
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                console.log("Usuario autenticado:", user.email);
-            } else {
-                console.log("Usuario no autenticado");
-            }
-        });
-    </script>
-  
 
 <!-- Lógica del navbar -->
 <script>
