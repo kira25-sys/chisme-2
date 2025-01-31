@@ -151,5 +151,67 @@
     }
 </script>
     
+    <script>
+    // Función para cargar posts de una categoría específica
+    async function loadPosts(category) {
+        try {
+            const postsRef = db.collection('posts').where('category', '==', category);
+            const querySnapshot = await postsRef.get();
+
+            const postsContainer = document.getElementById('posts-container');
+            postsContainer.innerHTML = ''; // Limpiar el contenedor
+
+            querySnapshot.forEach((doc) => {
+                const post = doc.data();
+                const postElement = document.createElement('div');
+                postElement.className = 'bg-white p-6 rounded-xl shadow-md';
+
+                // Mostrar título y precio a todos
+                postElement.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-800">${post.title}</h3>
+                    <p class="text-gray-600 mt-2">Precio: ${post.price} monedas</p>
+                `;
+
+                // Verificar si el usuario ha comprado el post o es el autor
+                const user = auth.currentUser;
+                const isAuthor = user && post.authorId === user.uid;
+                const isBuyer = user && post.buyers && post.buyers.includes(user.uid);
+
+                if (isAuthor || isBuyer) {
+                    // Mostrar contenido completo
+                    postElement.innerHTML += `<p class="text-gray-700 mt-4">${post.content}</p>`;
+                } else if (user) {
+                    // Mostrar botón de compra
+                    postElement.innerHTML += `
+                        <button onclick="buyPost('${doc.id}', ${post.price})" 
+                                class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">
+                            Comprar por ${post.price} monedas
+                        </button>
+                    `;
+                } else {
+                    // Mostrar mensaje de que el usuario debe iniciar sesión
+                    postElement.innerHTML += `
+                        <p class="mt-4 text-gray-600">Inicia sesión para comprar este post.</p>
+                    `;
+                }
+
+                postsContainer.appendChild(postElement);
+            });
+        } catch (error) {
+            console.error("Error al cargar los posts:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudieron cargar los posts. Por favor, inténtalo de nuevo.',
+                confirmButtonColor: '#6366f1'
+            });
+        }
+    }
+
+    // Llamar a la función para cargar los posts al abrir la página
+    const category = 'cuernos'; // Categoría de esta página
+    loadPosts(category);
+</script>
+    
 </body>
 </html>
