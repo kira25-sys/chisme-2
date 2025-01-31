@@ -3,8 +3,8 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 // Función para crear un post
-document.getElementById('createPostForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+document.getElementById('createPostForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Previene el envío tradicional del formulario
 
     const user = auth.currentUser;
     if (!user) {
@@ -56,10 +56,11 @@ document.getElementById('createPostForm')?.addEventListener('submit', async (e) 
         });
     } catch (error) {
         // Manejar errores
+        console.error("Error al publicar el post:", error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: error.message,
+            text: 'Hubo un problema al publicar el post. Por favor, inténtalo de nuevo.',
             confirmButtonColor: '#6366f1'
         });
     }
