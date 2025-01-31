@@ -2,12 +2,17 @@
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+console.log("Firebase Auth y Firestore inicializados correctamente");
+
 // Función para crear un post
 document.getElementById('createPostForm').addEventListener('submit', async (e) => {
     e.preventDefault(); // Previene el envío tradicional del formulario
 
+    console.log("Formulario enviado");
+
     const user = auth.currentUser;
     if (!user) {
+        console.warn("Usuario no autenticado");
         Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -22,7 +27,10 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
     const price = parseInt(document.getElementById('price').value);
     const category = document.getElementById('category').value;
 
+    console.log("Datos del formulario:", { title, content, price, category });
+
     if (price > 50) {
+        console.warn("Precio excede el máximo permitido");
         Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -33,6 +41,8 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
     }
 
     try {
+        console.log("Intentando guardar el post en Firestore...");
+
         // Guardar el post en Firestore
         await db.collection('posts').add({
             title,
@@ -44,6 +54,8 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
             buyers: []
         });
 
+        console.log("Post guardado correctamente en Firestore");
+
         // Mostrar mensaje de éxito
         Swal.fire({
             icon: 'success',
@@ -52,6 +64,7 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
             confirmButtonColor: '#6366f1'
         }).then(() => {
             // Redirigir a la página de la categoría seleccionada
+            console.log("Redirigiendo a:", `${category}.html`);
             window.location.href = `${category}.html`;
         });
     } catch (error) {
