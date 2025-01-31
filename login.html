@@ -6,7 +6,7 @@
     <title>Login - tuCHISME</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="firebase-config.js"></script>
+    
     <style>
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -55,6 +55,11 @@
             <a href="register.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Regístrate</a>
         </div>
     </div>
+
+ <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
