@@ -1,219 +1,272 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feed - tuCHISME</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .pulse-hover:hover {
-            animation: pulse 1s infinite;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed - tuCHISME</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+      @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+      }
+      .pulse-hover:hover {
+          animation: pulse 1s infinite;
+      }
+  </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-white shadow-sm">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <a href="index.html" class="text-2xl font-bold text-indigo-600">tuCHISME</a>
+  <!-- Navbar -->
+  <nav class="bg-white shadow-sm">
+      <div class="container mx-auto px-4">
+          <div class="flex justify-between items-center h-16">
+              <!-- Logo -->
+              <a href="index.html" class="text-2xl font-bold text-indigo-600">tuCHISME</a>
+              <!-- Menú para desktop -->
+              <div class="flex items-center gap-6">
+                  <div id="authState">
+                      <!-- Si no está autenticado -->
+                      <div id="notLoggedIn" class="flex items-center gap-4">
+                          <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
+                          <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">Registrarse</a>
+                      </div>
+                      <!-- Si está autenticado -->
+                      <div id="loggedIn" class="hidden flex items-center gap-4">
+                          <span id="userCoins" class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                              <span id="coinCount">50</span> 🪙
+                          </span>
+                          <button onclick="logout()" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                              Cerrar Sesión
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </nav>
 
-                <!-- Menú para desktop -->
-                <div class="flex items-center gap-6">
-                    <div id="authState">
-                        <!-- Si no está autenticado -->
-                        <div id="notLoggedIn" class="flex items-center gap-4">
-                            <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Iniciar Sesión</a>
-                            <a href="register.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">Registrarse</a>
-                        </div>
+  <!-- Contenido principal -->
+  <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-6">
+      <!-- Barra lateral -->
+      <div class="w-full md:w-64 space-y-4">
+          <!-- Botón Volver -->
+          <a href="index.html" class="block text-indigo-600 hover:text-indigo-700 font-medium mb-4">
+              ← Volver al inicio
+          </a>
+          
+          <div class="bg-white p-4 rounded-xl shadow-md">
+              <h2 class="text-lg font-bold text-gray-800 mb-4">Categorías</h2>
+              <div class="space-y-3">
+                  <a href="cuernos.html" 
+                     class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
+                     data-cat="cuernos">
+                      <span class="text-xl">🦌</span>
+                      <span>Noticias</span>
+                  </a>
+                  <a href="socios.html" 
+                     class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
+                     data-cat="socios">
+                      <span class="text-xl">🤝</span>
+                      <span>Consejos</span>
+                  </a>
+                  <a href="bandera.html" 
+                     class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
+                     data-cat="comunidad">
+                      <span class="text-xl">🏳</span>
+                      <span>Comunidad</span>
+                  </a>
+              </div>
+          </div>
+      </div>
 
-                        <!-- Si está autenticado -->
-                        <div id="loggedIn" class="hidden flex items-center gap-4">
-                            <span id="userCoins" class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                                <span id="coinCount">50</span> 🪙
-                            </span>
-                            <button onclick="logout()" class="text-indigo-600 hover:text-indigo-700 font-medium">
-                                Cerrar Sesión
-                            </button>
-                        </div>
-                    </div>
-                </div>
-             </div>
-         </div>
-    </nav>
+      <!-- Contenido principal -->
+      <div class="flex-1">
+          <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+              <h1 class="text-2xl font-bold text-gray-800">Publicaciones Recientes</h1>
+          </div>
+          <div class="space-y-6" id="posts-container">
+              <!-- Posts se cargan aquí -->
+          </div>
+      </div>
+  </div>
 
-    <!-- Contenido principal -->
-    <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-6">
-        <!-- Barra lateral -->
-        <div class="w-full md:w-64 space-y-4">
-            <!-- Botón Volver -->
-            <a href="index.html" class="block text-indigo-600 hover:text-indigo-700 font-medium mb-4">
-                ← Volver al inicio
-            </a>
-            
-            <div class="bg-white p-4 rounded-xl shadow-md">
-                <h2 class="text-lg font-bold text-gray-800 mb-4">Categorías</h2>
-                <div class="space-y-3">
-                    <a href="cuernos.html" 
-                       class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
-                       data-cat="cuernos">
-                        <span class="text-xl">🦌</span>
-                        <span>Noticias</span>
-                    </a>
-                    <a href="socios.html" 
-                       class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
-                       data-cat="socios">
-                        <span class="text-xl">🤝</span>
-                        <span>Consejos</span>
-                    </a>
-                    <a href="bandera.html" 
-                       class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
-                       data-cat="comunidad">
-                        <span class="text-xl">🏳</span>
-                        <span>Comunidad</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+  <!-- Botón flotante -->
+  <a href="new-post.html" 
+     class="fixed bottom-8 right-8 bg-indigo-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:bg-indigo-700 transition-all pulse-hover">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+  </a>
 
-        <!-- Contenido principal -->
-        <div class="flex-1">
-            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">Publicaciones Recientes</h1>
-            </div>
-            <div class="space-y-6" id="posts-container">
-                <!-- Posts se cargan aquí -->
-            </div>
-        </div>
-    </div>
+  <!-- Scripts en el orden correcto -->
+  <!-- 1. Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-    <!-- Botón flotante -->
-    <a href="new-post.html" 
-       class="fixed bottom-8 right-8 bg-indigo-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:bg-indigo-700 transition-all pulse-hover">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-        </svg>
-    </a>
+  <!-- 2. Configuración de Firebase -->
+  <script src="firebase-config.js"></script>
 
-    <!-- Scripts en el orden correcto -->
-    <!-- 1. Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <!-- 3. Lógica del navbar -->
+  <script>
+      // Escuchar cambios de autenticación
+      auth.onAuthStateChanged(user => {
+          const notLoggedIn = document.getElementById('notLoggedIn');
+          const loggedIn = document.getElementById('loggedIn');
+          const coinCount = document.getElementById('coinCount'); // Asegúrate de que este ID exista
 
-    <!-- 2. Configuración de Firebase -->
-    <script src="firebase-config.js"></script>
+          if (user) {
+              // Ocultar botones de login/registro
+              notLoggedIn.classList.add('hidden');
+              loggedIn.classList.remove('hidden');
 
-    <!-- 3. Lógica de la página -->
+              // Obtener monedas desde Firestore
+              db.collection('users').doc(user.uid).onSnapshot(doc => {
+                  if (doc.exists) {
+                      const monedas = doc.data().monedas || 0;
+                      coinCount.textContent = monedas; // Actualizar el contador
+                  } else {
+                      console.error("El documento del usuario no existe");
+                  }
+              });
+          } else {
+              // Usuario no autenticado
+              notLoggedIn.classList.remove('hidden');
+              loggedIn.classList.add('hidden');
+          }
+      });
 
-<!-- Lógica del navbar -->
-<script>
-    // Escuchar cambios de autenticación
-    auth.onAuthStateChanged(user => {
-        const notLoggedIn = document.getElementById('notLoggedIn');
-        const loggedIn = document.getElementById('loggedIn');
-        const coinCount = document.getElementById('coinCount'); // Asegúrate de que este ID exista
+      // Función para cerrar sesión
+      function logout() {
+          auth.signOut().then(() => {
+              window.location.href = 'index.html';
+          });
+      }
+  </script>
 
-        if (user) {
-            // Ocultar botones de login/registro
-            notLoggedIn.classList.add('hidden');
-            loggedIn.classList.remove('hidden');
+  <!-- 4. Funciones de posts: loadPosts y buyPost -->
+  <script>
+      // Función para cargar posts de una categoría específica
+      async function loadPosts(category) {
+          try {
+              const postsRef = db.collection('posts').where('category', '==', category);
+              const querySnapshot = await postsRef.get();
 
-            // Obtener monedas desde Firestore
-            db.collection('users').doc(user.uid).onSnapshot(doc => {
-                if (doc.exists) {
-                    const monedas = doc.data().monedas || 0;
-                    coinCount.textContent = monedas; // Actualizar el contador
-                } else {
-                    console.error("El documento del usuario no existe");
-                }
-            });
+              const postsContainer = document.getElementById('posts-container');
+              postsContainer.innerHTML = ''; // Limpiar el contenedor
 
-        } else {
-            // Usuario no autenticado
-            notLoggedIn.classList.remove('hidden');
-            loggedIn.classList.add('hidden');
-        }
-    });
+              querySnapshot.forEach((doc) => {
+                  const post = doc.data();
+                  const postElement = document.createElement('div');
+                  postElement.className = 'bg-white p-6 rounded-xl shadow-md';
 
-    // Función para cerrar sesión
-    function logout() {
-        auth.signOut().then(() => {
-            window.location.href = 'index.html';
-        });
-    }
-</script>
-    
-    
- <script>
-    // Función para cargar posts de una categoría específica
-    async function loadPosts(category) {
-        try {
-            const postsRef = db.collection('posts').where('category', '==', category);
-            const querySnapshot = await postsRef.get();
+                  // Mostrar título y precio a todos
+                  postElement.innerHTML = `
+                      <h3 class="text-xl font-bold text-gray-800">${post.title}</h3>
+                      <p class="text-gray-600 mt-2">Precio: ${post.price} monedas</p>
+                  `;
 
-            const postsContainer = document.getElementById('posts-container');
-            postsContainer.innerHTML = ''; // Limpiar el contenedor
+                  // Verificar si el usuario ha comprado el post o es el autor
+                  const user = auth.currentUser;
+                  const isAuthor = user && post.authorId === user.uid;
+                  const isBuyer = user && post.buyers && post.buyers.includes(user.uid);
 
-            querySnapshot.forEach((doc) => {
-                const post = doc.data();
-                const postElement = document.createElement('div');
-                postElement.className = 'bg-white p-6 rounded-xl shadow-md';
+                  if (isAuthor || isBuyer) {
+                      // Mostrar contenido completo
+                      postElement.innerHTML += `<p class="text-gray-700 mt-4">${post.content}</p>`;
+                  } else if (user) {
+                      // Mostrar botón de compra
+                      postElement.innerHTML += `
+                          <button onclick="buyPost('${doc.id}', ${post.price})" 
+                                  class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">
+                              Comprar por ${post.price} monedas
+                          </button>
+                      `;
+                  } else {
+                      // Mostrar mensaje de que el usuario debe iniciar sesión
+                      postElement.innerHTML += `
+                          <p class="mt-4 text-gray-600">Inicia sesión para comprar este post.</p>
+                      `;
+                  }
 
-                // Mostrar título y precio a todos
-                postElement.innerHTML = `
-                    <h3 class="text-xl font-bold text-gray-800">${post.title}</h3>
-                    <p class="text-gray-600 mt-2">Precio: ${post.price} monedas</p>
-                `;
+                  postsContainer.appendChild(postElement);
+              });
+          } catch (error) {
+              console.error("Error al cargar los posts:", error);
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'No se pudieron cargar los posts. Por favor, inténtalo de nuevo.',
+                  confirmButtonColor: '#6366f1'
+              });
+          }
+      }
 
-                // Verificar si el usuario ha comprado el post o es el autor
-                const user = auth.currentUser;
-                const isAuthor = user && post.authorId === user.uid;
-                const isBuyer = user && post.buyers && post.buyers.includes(user.uid);
+      // Función para comprar un post
+      async function buyPost(postId, price) {
+          console.log("buyPost llamado para el post:", postId, "con precio:", price);
+          const user = auth.currentUser;
+          if (!user) {
+              Swal.fire({
+                  icon: "warning",
+                  title: "Inicia sesión",
+                  text: "Debes iniciar sesión para comprar este post.",
+                  confirmButtonColor: "#6366f1"
+              });
+              return;
+          }
 
-                if (isAuthor || isBuyer) {
-                    // Mostrar contenido completo
-                    postElement.innerHTML += `<p class="text-gray-700 mt-4">${post.content}</p>`;
-                } else if (user) {
-                    // Mostrar botón de compra
-                    postElement.innerHTML += `
-                        <button onclick="buyPost('${doc.id}', ${post.price})" 
-                                class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">
-                            Comprar por ${post.price} monedas
-                        </button>
-                    `;
-                } else {
-                    // Mostrar mensaje de que el usuario debe iniciar sesión
-                    postElement.innerHTML += `
-                        <p class="mt-4 text-gray-600">Inicia sesión para comprar este post.</p>
-                    `;
-                }
+          const userRef = db.collection("users").doc(user.uid);
+          const postRef = db.collection("posts").doc(postId);
 
-                postsContainer.appendChild(postElement);
-            });
-        } catch (error) {
-            console.error("Error al cargar los posts:", error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudieron cargar los posts. Por favor, inténtalo de nuevo.',
-                confirmButtonColor: '#6366f1'
-            });
-        }
-    }
+          try {
+              const userDoc = await userRef.get();
+              if (!userDoc.exists || userDoc.data().monedas < price) {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Saldo insuficiente",
+                      text: "No tienes suficientes monedas para comprar este post.",
+                      confirmButtonColor: "#6366f1"
+                  });
+                  return;
+              }
 
-    // Llamar a la función para cargar los posts al abrir la página
-    const category = 'cuernos'; // Categoría de esta página
-    loadPosts(category);
-</script>
-    
-    
+              // Restar monedas y agregar el usuario a la lista de compradores
+              await userRef.update({
+                  monedas: userDoc.data().monedas - price
+              });
+
+              await postRef.update({
+                  buyers: firebase.firestore.FieldValue.arrayUnion(user.uid)
+              });
+
+              // Mostrar el contenido completo en una alerta
+              const postDoc = await postRef.get();
+              const post = postDoc.data();
+
+              Swal.fire({
+                  icon: "info",
+                  title: post.title,
+                  text: post.content,
+                  confirmButtonColor: "#6366f1"
+              }).then(() => {
+                  loadPosts("cuernos"); // Recargar la lista de posts
+              });
+          } catch (error) {
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: error.message,
+                  confirmButtonColor: "#6366f1"
+              });
+          }
+      }
+
+      // Llamar a la función para cargar los posts al abrir la página
+      const category = 'cuernos'; // Categoría de esta página
+      loadPosts(category);
+  </script>
 </body>
 </html>
