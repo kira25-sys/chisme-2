@@ -205,64 +205,62 @@
       }
 
       // Función para comprar un post
-      async function buyPost(postId, price) {
-          console.log("buyPost llamado para el post:", postId, "con precio:", price);
-          const user = auth.currentUser;
-          if (!user) {
-              Swal.fire({
-                  icon: "warning",
-                  title: "Inicia sesión",
-                  text: "Debes iniciar sesión para comprar este post.",
-                  confirmButtonColor: "#6366f1"
-              });
-              return;
-          }
+    async function buyPost(postId, price) {
+    console.log("buyPost llamado para el post:", postId, "con precio:", price);
+    const user = auth.currentUser;
+    if (!user) {
+        Swal.fire({
+            icon: "warning",
+            title: "Inicia sesión",
+            text: "Debes iniciar sesión para comprar este post.",
+            confirmButtonColor: "#6366f1"
+        });
+        return;
+    }
 
-          const userRef = db.collection("users").doc(user.uid);
-          const postRef = db.collection("posts").doc(postId);
+    const userRef = db.collection("users").doc(user.uid);
+    const transactionRef = db.collection("transactions").doc(); // Se generará un ID nuevo
 
-          try {
-              const userDoc = await userRef.get();
-              if (!userDoc.exists || userDoc.data().monedas < price) {
-                  Swal.fire({
-                      icon: "error",
-                      title: "Saldo insuficiente",
-                      text: "No tienes suficientes monedas para comprar este post.",
-                      confirmButtonColor: "#6366f1"
-                  });
-                  return;
-              }
+    try {
+        await db.runTransaction(async (transaction) => {
+            const userDoc = await transaction.get(userRef);
+            if (!userDoc.exists || userDoc.data().monedas < price) {
+                throw new Error("Saldo insuficiente");
+            }
+            // Descontar las monedas del usuario
+            transaction.update(userRef, {
+                monedas: userDoc.data().monedas - price
+            });
+            // Registrar la transacción (la compra)
+            transaction.set(transactionRef, {
+                buyerId: user.uid,
+                postId: postId,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        });
 
-              // Restar monedas y agregar el usuario a la lista de compradores
-              await userRef.update({
-                  monedas: userDoc.data().monedas - price
-              });
+        // Una vez completada la transacción, obtener el post para mostrarlo
+        const postDoc = await db.collection("posts").doc(postId).get();
+        const post = postDoc.data();
 
-              await postRef.update({
-                  buyers: firebase.firestore.FieldValue.arrayUnion(user.uid)
-              });
+        Swal.fire({
+            icon: "info",
+            title: post.title,
+            text: post.content,
+            confirmButtonColor: "#6366f1"
+        }).then(() => {
+            loadPosts("cuernos"); // Recargar la lista de posts
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.message,
+            confirmButtonColor: "#6366f1"
+        });
+    }
+}
 
-              // Mostrar el contenido completo en una alerta
-              const postDoc = await postRef.get();
-              const post = postDoc.data();
-
-              Swal.fire({
-                  icon: "info",
-                  title: post.title,
-                  text: post.content,
-                  confirmButtonColor: "#6366f1"
-              }).then(() => {
-                  loadPosts("cuernos"); // Recargar la lista de posts
-              });
-          } catch (error) {
-              Swal.fire({
-                  icon: "error",
-                  title: "Error",
-                  text: error.message,
-                  confirmButtonColor: "#6366f1"
-              });
-          }
-      }
 
       // Llamar a la función para cargar los posts al abrir la página
       const category = 'cuernos'; // Categoría de esta página
