@@ -151,48 +151,50 @@
     }
 </script>
     
-    <script>
-    // Función para cargar posts de una categoría específica
+   <script>
+    let currentUser = null;
+
+    auth.onAuthStateChanged(user => {
+        currentUser = user;
+        loadPosts("cuernos"); // Cargar los posts una vez obtenida la sesión
+    });
+
     async function loadPosts(category) {
         try {
-            const postsRef = db.collection('posts').where('category', '==', category);
+            const postsRef = db.collection("posts").where("category", "==", category);
             const querySnapshot = await postsRef.get();
 
-            const postsContainer = document.getElementById('posts-container');
-            postsContainer.innerHTML = ''; // Limpiar el contenedor
+            const postsContainer = document.getElementById("posts-container");
+            postsContainer.innerHTML = ""; // Limpiar el contenedor
 
             querySnapshot.forEach((doc) => {
                 const post = doc.data();
-                const postElement = document.createElement('div');
-                postElement.className = 'bg-white p-6 rounded-xl shadow-md';
+                const postElement = document.createElement("div");
+                postElement.className = "bg-white p-6 rounded-xl shadow-md";
 
-                // Mostrar título y precio a todos
-                postElement.innerHTML = `
+                // Mostrar título y precio
+                postElement.innerHTML = 
                     <h3 class="text-xl font-bold text-gray-800">${post.title}</h3>
                     <p class="text-gray-600 mt-2">Precio: ${post.price} monedas</p>
-                `;
+                ;
 
-                // Verificar si el usuario ha comprado el post o es el autor
-                const user = auth.currentUser;
-                const isAuthor = user && post.authorId === user.uid;
-                const isBuyer = user && post.buyers && post.buyers.includes(user.uid);
+                const isAuthor = currentUser && post.authorId === currentUser.uid;
+                const isBuyer = currentUser && post.buyers && post.buyers.includes(currentUser.uid);
 
                 if (isAuthor || isBuyer) {
                     // Mostrar contenido completo
-                    postElement.innerHTML += `<p class="text-gray-700 mt-4">${post.content}</p>`;
-                } else if (user) {
+                    postElement.innerHTML += <p class="text-gray-700 mt-4">${post.content}</p>;
+                } else if (currentUser) {
                     // Mostrar botón de compra
-                    postElement.innerHTML += `
+                    postElement.innerHTML += 
                         <button onclick="buyPost('${doc.id}', ${post.price})" 
                                 class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all">
-                            Comprar por ${post.price} monedas
+                            comprar ${post.price}
                         </button>
-                    `;
+                    ;
                 } else {
                     // Mostrar mensaje de que el usuario debe iniciar sesión
-                    postElement.innerHTML += `
-                        <p class="mt-4 text-gray-600">Inicia sesión para comprar este post.</p>
-                    `;
+                    postElement.innerHTML += <p class="mt-4 text-gray-600">Inicia sesión para comprar este post.</p>;
                 }
 
                 postsContainer.appendChild(postElement);
@@ -200,17 +202,71 @@
         } catch (error) {
             console.error("Error al cargar los posts:", error);
             Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudieron cargar los posts. Por favor, inténtalo de nuevo.',
-                confirmButtonColor: '#6366f1'
+                icon: "error",
+                title: "Error",
+                text: "No se pudieron cargar los posts. Por favor, inténtalo de nuevo.",
+                confirmButtonColor: "#6366f1"
             });
         }
     }
 
-    // Llamar a la función para cargar los posts al abrir la página
-    const category = 'cuernos'; // Categoría de esta página
-    loadPosts(category);
+    async function buyPost(postId, price) {
+        if (!currentUser) {
+            Swal.fire({
+                icon: "warning",
+                title: "Inicia sesión",
+                text: "Debes iniciar sesión para comprar este post.",
+                confirmButtonColor: "#6366f1"
+            });
+            return;
+        }
+
+        const userRef = db.collection("users").doc(currentUser.uid);
+        const postRef = db.collection("posts").doc(postId);
+
+        try {
+            const userDoc = await userRef.get();
+            if (!userDoc.exists || userDoc.data().monedas < price) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Saldo insuficiente",
+                    text: "No tienes suficientes monedas para comprar este post.",
+                    confirmButtonColor: "#6366f1"
+                });
+                return;
+            }
+
+            // Restar monedas y agregar el usuario a la lista de compradores
+            await userRef.update({
+                monedas: userDoc.data().monedas - price
+            });
+
+            await postRef.update({
+                buyers: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+            });
+
+            // Mostrar el contenido completo en una viñeta de alerta
+            const postDoc = await postRef.get();
+            const post = postDoc.data();
+
+            Swal.fire({
+                icon: "info",
+                title: post.title,
+                text: post.content,
+                confirmButtonColor: "#6366f1"
+            }).then(() => {
+                loadPosts("cuernos"); // Recargar la lista de posts
+            });
+
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.message,
+                confirmButtonColor: "#6366f1"
+            });
+        }
+    }
 </script>
     
     
