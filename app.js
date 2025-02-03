@@ -58,8 +58,8 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
             confirmButtonColor: '#6366f1'
         }).then(() => {
             // Redirigir a la página de la categoría seleccionada
-            console.log("Redirigiendo a:", ${category}.html);
-            window.location.href = ${category}.html;
+            console.log("Redirigiendo a:", `${category}.html`);
+            window.location.href = `${category}.html`;
         });
     } catch (error) {
         // Manejar errores
