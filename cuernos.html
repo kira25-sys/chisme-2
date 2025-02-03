@@ -152,13 +152,6 @@
 </script>
     
    <script>
-    let currentUser = null;
-
-    auth.onAuthStateChanged(user => {
-        currentUser = user;
-        loadPosts("cuernos"); // Cargar los posts una vez obtenida la sesión
-    });
-
     async function loadPosts(category) {
         try {
             const postsRef = db.collection("posts").where("category", "==", category);
