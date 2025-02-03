@@ -22,7 +22,7 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
     const category = document.getElementById('category').value;
 
     console.log("Datos del formulario:", { title, content, price, category });
-    
+
     if (price > 50) {
         console.warn("Precio excede el máximo permitido");
         Swal.fire({
@@ -33,7 +33,7 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
         });
         return;
     }
-    
+
     try {
         console.log("Intentando guardar el post en Firestore...");
 
@@ -58,8 +58,8 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
             confirmButtonColor: '#6366f1'
         }).then(() => {
             // Redirigir a la página de la categoría seleccionada
-            console.log("Redirigiendo a:", `${category}.html`);
-            window.location.href = `${category}.html`;
+            console.log("Redirigiendo a:", ${category}.html);
+            window.location.href = ${category}.html;
         });
     } catch (error) {
         // Manejar errores
@@ -70,6 +70,5 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
             text: 'Hubo un problema al publicar el post. Por favor, inténtalo de nuevo.',
             confirmButtonColor: '#6366f1'
         });
-        ;
     }
 });
