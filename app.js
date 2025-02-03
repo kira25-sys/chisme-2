@@ -22,6 +22,16 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
     const category = document.getElementById('category').value;
 
     console.log("Datos del formulario:", { title, content, price, category });
+    
+     if (!title || !content || !category) {
+        console.warn("Faltan datos en el formulario");
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Todos los campos son obligatorios.',
+            confirmButtonColor: '#6366f1'
+        });
+        return;
 
     if (price > 50) {
         console.warn("Precio excede el máximo permitido");
@@ -33,6 +43,9 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
         });
         return;
     }
+    const submitButton = document.querySelector("button[type='submit']");
+    submitButton.disabled = true;
+    submitButton.textContent = "Publicando...";
 
     try {
         console.log("Intentando guardar el post en Firestore...");
@@ -70,5 +83,7 @@ document.getElementById('createPostForm').addEventListener('submit', async (e) =
             text: 'Hubo un problema al publicar el post. Por favor, inténtalo de nuevo.',
             confirmButtonColor: '#6366f1'
         });
+        submitButton.disabled = false;
+        submitButton.textContent = "Publicar";
     }
 });
