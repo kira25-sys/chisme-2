@@ -15,64 +15,7 @@
             animation: pulse 1s infinite;
         }
     </style>
-    <script>
-        // Datos simulados (para MVP)
-        const posts = {
-            noticias: [
-                { titulo: "Nueva ordenanza municipal", preview: "Se aprobó la nueva normativa de tránsito...", contenido: "Texto completo aquí..." },
-                { titulo: "Corte de agua programado", preview: "El próximo viernes habrá interrupción del servicio...", contenido: "Detalles del corte..." }
-            ],
-            consejos: [
-                { titulo: "Cómo ahorrar en la compra", preview: "5 tips prácticos para economizar...", contenido: "Consejos detallados..." }
-            ],
-            comunidad: [
-                { titulo: "Fiesta del barrio", preview: "Este sábado en la plaza principal...", contenido: "Programación completa..." }
-            ]
-        }
-
-        function cargarPosts() {
-            const params = new URLSearchParams(window.location.search)
-            const categoria = params.get('categoria') || 'noticias'
-            
-            // Actualizar barra lateral
-            document.querySelectorAll('.categoria-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg')
-                if(btn.dataset.cat === categoria) {
-                    btn.classList.add('bg-indigo-600', 'text-white', 'shadow-lg')
-                }
-            })
-            
-            // Mostrar posts
-            const container = document.getElementById('posts-container')
-            container.innerHTML = posts[categoria].map((post, index) => `
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mb-6 group">
-                    <div class="flex items-start gap-4">
-                        <div class="bg-indigo-100 p-3 rounded-lg">
-                            <span class="text-indigo-600 text-2xl">${index === 0 ? '📢' : index === 1 ? '💡' : '🎉'}</span>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">${post.titulo}</h3>
-                            <p class="text-gray-600 mb-4">${post.preview}</p>
-                            <button onclick="mostrarContenido('${post.contenido}')" 
-                                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2">
-                                <span>Ver más</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('')
-        }
-
-        function mostrarContenido(contenido) {
-            alert(`Contenido completo:\n\n${contenido}`)
-        }
-
-        // Cargar al iniciar
-        window.onload = cargarPosts
-    </script>
+    
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen">
     
@@ -121,19 +64,19 @@
                        class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
                        data-cat="cuernos">
                         <span class="text-xl">🦌</span>
-                        <span>Noticias</span>
+                        <span>Cuernos</span>
                     </a>
                     <a href="socios.html" 
                        class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
                        data-cat="socios">
                         <span class="text-xl">🤝</span>
-                        <span>Consejos</span>
+                        <span>Sociedades</span>
                     </a>
                     <a href="bandera.html" 
                        class="categoria-btn block p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 flex items-center gap-2"
                        data-cat="comunidad">
                         <span class="text-xl">🏳</span>
-                        <span>Comunidad</span>
+                        <span>Nosotros</span>
                     </a>
                 </div>
             </div>
