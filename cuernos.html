@@ -237,7 +237,11 @@
                 postId: postId,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
-        });
+           const postRef = db.collection("posts").doc(postId);
+                  transaction.update(postRef, {
+                      buyers: firebase.firestore.FieldValue.arrayUnion(user.uid)
+                  });
+           });
 
         // Una vez completada la transacción, obtener el post para mostrarlo
         const postDoc = await db.collection("posts").doc(postId).get();
