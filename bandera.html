@@ -249,7 +249,7 @@
             text: post.content,
             confirmButtonColor: "#6366f1"
         }).then(() => {
-            loadPosts("cuernos"); // Recargar la lista de posts
+            loadPosts("bandera"); // Recargar la lista de posts
         });
     } catch (error) {
         Swal.fire({
@@ -260,13 +260,6 @@
         });
     }
 }
-
-
-      // Llamar a la función para cargar los posts al abrir la página
-      const category = 'cuernos'; // Categoría de esta página
-      loadPosts(category);
-  </script>
-
     // Llamar a la función para cargar los posts al abrir la página
     const category = 'bandera'; // Categoría de esta página
     loadPosts(category);
