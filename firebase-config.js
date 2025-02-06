@@ -42,3 +42,4 @@ window.updateCoinDisplay = (coins) => {
     console.warn("Elemento 'userCoins' no encontrado en el DOM.");
   }
 };
+
