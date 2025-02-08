@@ -237,6 +237,7 @@
                 postId: postId,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
+            // añade al comprador a buyers
            const postRef = db.collection("posts").doc(postId);
                   transaction.update(postRef, {
                       buyers: firebase.firestore.FieldValue.arrayUnion(user.uid)
